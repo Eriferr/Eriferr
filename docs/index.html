@@ -164,14 +164,25 @@
     }
     #about-msg {
       display: none;
-      transform: translate(-50%,-50%) scale(0.3);
-      opacity: 0;
-      transition: transform 0.7s, opacity 0.7s;
+      text-align: center;
+      width: 95vw;
+      max-width: 1200px;
+      font-size: 2.5em;
+      font-weight: 400;
+      color: #fff;
       position: absolute;
       top: 50%;
       left: 50%;
-      font-family: 'Orbitron', Arial, sans-serif;
-      letter-spacing: 1.5px;
+      transform: translate(-50%,-50%) scale(0.3);
+      opacity: 0;
+      line-height: 1.3;
+      white-space: normal;
+      word-break: break-word;
+      background: linear-gradient(90deg, #fff 60%, #6e5cff 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 16px #fff, 0 0 32px #6e5cffcc, 0 0 64px #2a5298cc, 0 2px 8px #fff8;
     }
     #about-msg.arriving {
       display: block;
@@ -226,10 +237,26 @@
   </div>
   <div id="about-star" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;">
     <div id="about-star-dot" style="width:2px;height:2px;border-radius:50%;background:radial-gradient(circle,#fff 70%,#6e5cff 100%);box-shadow:0 0 8px 2px #fff6,0 0 16px 4px #6e5cff22;opacity:0.7;transition:all 1.2s;"></div>
-    <div id="about-msg" style="display:none;text-align:center;width:90vw;max-width:900px;font-size:2.5em;font-weight:400;color:#fff;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.3);opacity:0;line-height:1.2;
+    <div id="about-msg" style="
+      display:none;
+      text-align:center;
+      width:95vw;
+      max-width:1200px;
+      font-size:2.5em;
+      font-weight:400;
+      color:#fff;
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%) scale(0.3);
+      opacity:0;
+      line-height:1.3;
+      white-space:normal;
+      word-break:break-word;
       background: linear-gradient(90deg, #fff 60%, #6e5cff 100%);
       background-clip: text;
       -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       text-shadow: 0 0 16px #fff, 0 0 32px #6e5cffcc, 0 0 64px #2a5298cc, 0 2px 8px #fff8;
     ">I'm a Systems Analysis and Development student from São Paulo, Brazil. I'm 19 years old and currently work as an IT assistant. I'm a beginner dev, and this is my first project.</div>
   </div>
