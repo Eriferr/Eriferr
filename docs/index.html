@@ -248,6 +248,250 @@
     let tunnelProgress = 0;
     let tunnelAnim = false;
     // Animação de entrada dos textos
+    window.onload = function() {
+      setTimeout(() => document.getElementById('bemvindo').classList.add('visible'), 200);
+      setTimeout(() => document.getElementById('nome').classList.add('visible'), 700);
+      startGalaxy();
+    };
+    // Sequência automática de transição para o túnel
+    setTimeout(() => {
+      document.getElementById('main-container').classList.add('hide');
+      setTimeout(() => {
+        document.getElementById('main-container').style.display = 'none';
+        startTunnel();
+      }, 500);
+    }, 1700);
+    function startTunnel() {
+      tunnelMode = true;
+      tunnelAnim = true;
+      tunnelProgress = 0;
+      // Inicia o texto final como uma estrela
+      const aboutStarDot = document.getElementById('about-star-dot');
+      const aboutMsg = document.getElementById('about-msg');
+      aboutStarDot.style.display = 'block';
+      aboutMsg.style.display = 'none';
+      let arrivalProgress = 0;
+      function animateArrival() {
+        arrivalProgress += tunnelAnim ? 0.014 : 0;
+        // Estrela cresce até virar o texto
+        if (arrivalProgress < 0.7) {
+          let size = 2 + arrivalProgress * 130;
+          aboutStarDot.style.width = size + 'px';
+          aboutStarDot.style.height = size + 'px';
+          aboutStarDot.style.opacity = 0.7 + arrivalProgress * 0.3;
+          aboutStarDot.style.boxShadow = `0 0 ${8 + arrivalProgress*104}px ${2 + arrivalProgress*38}px #fff${Math.floor(6 + arrivalProgress*10)}0,0 0 ${16 + arrivalProgress*144}px ${4 + arrivalProgress*52}px #6e5cff${Math.floor(34 + arrivalProgress*30)}0`;
+          aboutMsg.style.display = 'none';
+        } else {
+          aboutStarDot.style.display = 'none';
+          aboutMsg.classList.add('arriving');
+          // Suaviza a chegada do texto
+          let t = Math.min((arrivalProgress-0.7)/0.5, 1);
+          let scale = 0.3 + t * 0.7;
+          let opacity = Math.max(0, Math.min(t, 1));
+          aboutMsg.style.transform = `translate(-50%,-50%) scale(${scale})`;
+          aboutMsg.style.opacity = opacity;
+          aboutMsg.style.display = 'block';
+        }
+        if (arrivalProgress < 1.15 && tunnelAnim) {
+          requestAnimationFrame(animateArrival);
+        }
+      }
+      arrivalProgress = 0;
+      tunnelAnim = true;
+      animateArrival();
+      setTimeout(() => {
+        tunnelAnim = false;
+        aboutMsg.style.display = 'block';
+        aboutMsg.style.transform = 'translate(-50%,-50%) scale(1)';
+        aboutMsg.style.opacity = '1';
+        setTimeout(() => {
+          tunnelMode = false;
+        }, 300);
+      }, 2000);
+    }
+    // Modal
+    function openModal(lang) {
+      const modal = document.getElementById('modal');
+      const modalText = document.getElementById('modal-text');
+      if (lang === 'pt') {
+        modalText.innerHTML = 'Sou um estudante de Análise e Desenvolvimento de Sistemas de São Paulo, Brasil. Tenho 19 anos e atualmente trabalho como assistente de TI. Sou apaixonado por programação.';
+      } else {
+        modalText.innerHTML = "I'm a Systems Analysis and Development student from São Paulo, Brazil. I'm 19 years old and currently work as an IT assistant. I'm passionate about programming";
+      }
+      modal.classList.add('active');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+    // Fundo animado de galáxia com efeito de túnel
+    function startGalaxy() {
+      const canvas = document.getElementById('galaxy-bg');
+      const ctx = canvas.getContext('2d');
+      let w = window.innerWidth;
+      let h = window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
+      let stars = [];
+      let distantStars = [];
+      // Menos distantStars para mais leveza
+      for (let i = 0; i < 60; i++) {
+        distantStars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 0.6 + 0.18,
+          o: Math.random() * 0.25 + 0.12
+        });
+      }
+      for (let i = 0; i < 180; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.5 + 0.5,
+          o: Math.random() * 0.5 + 0.5,
+          s: Math.random() * 0.5 + 0.2,
+          angle: Math.random() * 2 * Math.PI,
+          tunnelDist: Math.random() * Math.max(w, h) * 0.5 + 40,
+          tunnelAngle: Math.random() * 2 * Math.PI
+        });
+      }
+      // Estrela cadente
+      let shootingStar = null;
+      function spawnShootingStar() {
+        const startY = Math.random() * h * 0.3 + h * 0.05;
+        shootingStar = {
+          x: Math.random() * w * 0.4,
+          y: startY,
+          len: Math.random() * 120 + 80,
+          speed: Math.random() * 7 + 8,
+          size: Math.random() * 2 + 1.5,
+          alpha: 1.0,
+          life: 0,
+          angle: Math.PI / 4 + (Math.random() - 0.5) * 0.2
+        };
+      }
+      function drawShootingStar() {
+        if (!shootingStar) return;
+        const dx = Math.cos(shootingStar.angle) * shootingStar.len;
+        const dy = Math.sin(shootingStar.angle) * shootingStar.len;
+        const grad = ctx.createLinearGradient(
+          shootingStar.x, shootingStar.y,
+          shootingStar.x - dx, shootingStar.y - dy
+        );
+        grad.addColorStop(0, 'rgba(255,255,255,1)');
+        grad.addColorStop(0.2, 'rgba(255,255,255,0.7)');
+        grad.addColorStop(0.5, 'rgba(173,216,255,0.3)');
+        grad.addColorStop(1, 'rgba(0,0,32,0)');
+        ctx.save();
+        ctx.globalAlpha = shootingStar.alpha;
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = shootingStar.size;
+        ctx.beginPath();
+        ctx.moveTo(shootingStar.x, shootingStar.y);
+        ctx.lineTo(shootingStar.x - dx, shootingStar.y - dy);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(shootingStar.x, shootingStar.y, shootingStar.size * 1.2, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.shadowColor = '#fff';
+        ctx.shadowBlur = 18;
+        ctx.fill();
+        ctx.restore();
+        shootingStar.x += Math.cos(shootingStar.angle) * shootingStar.speed;
+        shootingStar.y += Math.sin(shootingStar.angle) * shootingStar.speed;
+        shootingStar.alpha -= 0.012;
+        shootingStar.life++;
+        if (shootingStar.alpha <= 0 || shootingStar.x > w + 100 || shootingStar.y > h + 100) {
+          shootingStar = null;
+        }
+      }
+      setInterval(() => {
+        if (!shootingStar && Math.random() > 0.6) {
+          spawnShootingStar();
+        }
+      }, 1800);
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        // gradiente galáxia
+        let grad = ctx.createRadialGradient(w/2, h/2, h/8, w/2, h/2, h/1.2);
+        grad.addColorStop(0, '#2a5298');
+        grad.addColorStop(0.3, '#6e5cff33');
+        grad.addColorStop(0.7, '#0a0026');
+        grad.addColorStop(1, '#000010');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+        // Desenha estrelas minúsculas e distantes no fundo do painel de boas-vindas
+        let distantAnim = tunnelMode ? Math.min(tunnelProgress*1.1,1) : 0;
+        for (let star of distantStars) {
+          let r = star.r * (1 + distantAnim * 6.2);
+          let o = star.o * (1 + distantAnim * 1.7);
+          ctx.globalAlpha = o;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, r, 0, 2 * Math.PI);
+          ctx.fillStyle = '#fff';
+          ctx.shadowBlur = 0;
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        // estrelas
+        if (!tunnelMode) {
+          for (let star of stars) {
+            ctx.globalAlpha = star.o;
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.r, 0, 2 * Math.PI);
+            ctx.fillStyle = '#fff';
+            ctx.shadowColor = '#fff';
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            star.x += star.s;
+            if (star.x > w) star.x = 0;
+          }
+        } else {
+          // Efeito túnel: estrelas passando do centro para fora (warp)
+          tunnelProgress += tunnelAnim ? 0.022 : 0;
+          for (let star of stars) {
+            // Calcula a posição da estrela durante o túnel
+            let dist = star.tunnelDist + tunnelProgress * Math.max(w, h) * 1.2;
+            let angle = star.tunnelAngle;
+            let sx = w/2 + Math.cos(angle) * dist;
+            let sy = h/2 + Math.sin(angle) * dist;
+            // Alongamento para efeito de velocidade
+            let stretch = 1 + tunnelProgress * 7;
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, star.o - tunnelProgress * 0.2);
+            ctx.translate(sx, sy);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, star.r * stretch, star.r * 0.7, 0, 0, 2 * Math.PI);
+            ctx.fillStyle = '#fff';
+            ctx.shadowColor = '#fff';
+            ctx.shadowBlur = 8 + tunnelProgress * 10;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.restore();
+            // reset estrela se sair da tela
+            if (sx < -20 || sx > w+20 || sy < -20 || sy > h+20) {
+              // Reposiciona estrela exatamente no centro, com novo ângulo e propriedades
+              star.tunnelDist = 0;
+              star.tunnelAngle = Math.random() * 2 * Math.PI;
+              star.r = Math.random() * 1.5 + 0.5;
+              star.o = Math.random() * 0.5 + 0.5;
+            }
+          }
+        }
+        // estrela cadente
+        if (!tunnelMode) drawShootingStar();
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(draw);
+      }
+      draw();
+      window.addEventListener('resize', () => {
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
+      });
+    }
   </script>
 </body>
 </html> 
