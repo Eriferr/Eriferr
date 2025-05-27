@@ -178,11 +178,13 @@
       line-height: 1.3;
       white-space: normal;
       word-break: break-word;
-      background: linear-gradient(90deg, #fff 60%, #6e5cff 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 16px #fff, 0 0 32px #6e5cffcc, 0 0 64px #2a5298cc, 0 2px 8px #fff8;
+      text-shadow:
+        0 0 24px #fff,
+        0 0 48px #6e5cff,
+        0 0 96px #2a5298,
+        0 2px 8px #fff,
+        0 0 2px #fff,
+        0 0 1px #fff;
     }
     #about-msg.arriving {
       display: block;
@@ -253,11 +255,13 @@
       line-height:1.3;
       white-space:normal;
       word-break:break-word;
-      background: linear-gradient(90deg, #fff 60%, #6e5cff 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 16px #fff, 0 0 32px #6e5cffcc, 0 0 64px #2a5298cc, 0 2px 8px #fff8;
+      text-shadow:
+        0 0 24px #fff,
+        0 0 48px #6e5cff,
+        0 0 96px #2a5298,
+        0 2px 8px #fff,
+        0 0 2px #fff,
+        0 0 1px #fff;
     ">I'm a Systems Analysis and Development student from São Paulo, Brazil. I'm 19 years old and currently work as an IT assistant. I'm a beginner dev, and this is my first project.</div>
   </div>
 
@@ -299,7 +303,7 @@
       aboutMsg.style.display = 'none';
       let arrivalProgress = 0;
       function animateArrival() {
-        arrivalProgress += tunnelAnim ? 0.014 : 0;
+        arrivalProgress += tunnelAnim ? 0.022 : 0;
         // Estrela cresce até virar o texto
         if (arrivalProgress < 0.7) {
           let size = 2 + arrivalProgress * 130;
@@ -360,13 +364,13 @@
       canvas.height = h;
       let stars = [];
       let distantStars = [];
-      // Menos distantStars para mais leveza
-      for (let i = 0; i < 60; i++) {
+      // Menos distantStars para mais leveza e fluidez
+      for (let i = 0; i < 40; i++) {
         distantStars.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: Math.random() * 0.6 + 0.18,
-          o: Math.random() * 0.25 + 0.12
+          r: Math.random() * 0.5 + 0.15,
+          o: Math.random() * 0.22 + 0.10
         });
       }
       for (let i = 0; i < 180; i++) {
@@ -449,8 +453,8 @@
         // Desenha estrelas minúsculas e distantes no fundo do painel de boas-vindas
         let distantAnim = tunnelMode ? Math.min(tunnelProgress*1.1,1) : 0;
         for (let star of distantStars) {
-          let r = star.r * (1 + distantAnim * 6.2);
-          let o = star.o * (1 + distantAnim * 1.7);
+          let r = star.r * (1 + distantAnim * 5.5);
+          let o = star.o * (1 + distantAnim * 1.5);
           ctx.globalAlpha = o;
           ctx.beginPath();
           ctx.arc(star.x, star.y, r, 0, 2 * Math.PI);
