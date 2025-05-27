@@ -302,9 +302,13 @@
       aboutStarDot.style.display = 'block';
       aboutMsg.style.display = 'none';
       let arrivalProgress = 0;
-      function animateArrival() {
-        arrivalProgress += tunnelAnim ? 0.022 : 0;
-        // Estrela cresce até virar o texto
+      let lastTime = null;
+      function animateArrival(ts) {
+        if (!lastTime) lastTime = ts;
+        let dt = (ts - lastTime) / 1000; // segundos
+        lastTime = ts;
+        // Suaviza a velocidade, independente do FPS
+        arrivalProgress += tunnelAnim ? dt * 0.85 : 0;
         if (arrivalProgress < 0.7) {
           let size = 2 + arrivalProgress * 130;
           aboutStarDot.style.width = size + 'px';
@@ -315,7 +319,6 @@
         } else {
           aboutStarDot.style.display = 'none';
           aboutMsg.classList.add('arriving');
-          // Suaviza a chegada do texto
           let t = Math.min((arrivalProgress-0.7)/0.5, 1);
           let scale = 0.3 + t * 0.7;
           let opacity = Math.max(0, Math.min(t, 1));
@@ -325,20 +328,18 @@
         }
         if (arrivalProgress < 1.15 && tunnelAnim) {
           requestAnimationFrame(animateArrival);
+        } else {
+          // Finaliza animação suavemente
+          aboutMsg.style.display = 'block';
+          aboutMsg.style.transform = 'translate(-50%,-50%) scale(1)';
+          aboutMsg.style.opacity = '1';
+          tunnelMode = false;
         }
       }
       arrivalProgress = 0;
       tunnelAnim = true;
-      animateArrival();
-      setTimeout(() => {
-        tunnelAnim = false;
-        aboutMsg.style.display = 'block';
-        aboutMsg.style.transform = 'translate(-50%,-50%) scale(1)';
-        aboutMsg.style.opacity = '1';
-        setTimeout(() => {
-          tunnelMode = false;
-        }, 300);
-      }, 2000);
+      lastTime = null;
+      requestAnimationFrame(animateArrival);
     }
     // Modal
     function openModal(lang) {
