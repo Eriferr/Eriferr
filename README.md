@@ -38,16 +38,6 @@ As you can see, my name is Erick. I'm 19 years old and just started my tech care
 
 </div>
 
-## 📊 GitHub Stats
-
-<div align="center">
-
-![Erick's GitHub stats](https://github-readme-stats.vercel.app/api?username=Eriferr&show_icons=true&theme=radical)
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Eriferr&layout=compact&theme=radical)
-
-</div>
-
 ## 📫 Contact
 
 <div align="center">
