@@ -2,7 +2,7 @@
 
 <div align="center">
   
-![Demo](Hi-Im-Erick.mp4)
+![Demo](Im-Erick.gif)
 
 ### Developer in training | Analysis and Development Systems Student
 
